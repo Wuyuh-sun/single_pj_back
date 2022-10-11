@@ -131,6 +131,23 @@ router.get("/signup/createuser", (req, res) => {
   );
 });
 
+// 현재 로그인중인 유저정보 가져오기 api
+router.get("/logingUserInfo", (req, res) => {
+  const reqID = req.query.reqID;
+
+  maria.query(
+    `select * from user where ID='${reqID}'`,
+    function (err, rows, fields) {
+      if (!err) {
+        res.send(rows);
+      } else {
+        console.log("error: " + err);
+        res.send(err);
+      }
+    }
+  );
+});
+
 // router.get("/sessionTest", (req,res)=>{
 //   console.log(req.session);
 //   if(req.session.num === undefined){
