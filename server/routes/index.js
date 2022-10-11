@@ -13,6 +13,20 @@ const FileStore = require("session-file-store")(session);
 //mariaDB connect
 const maria = require("../db/maria");
 
+function jsonKeyUpperCase(object){
+  if(Array.isArray(object)){
+  // 리스트<맵> 형식으로 넘어오는 경우 처리
+      object.forEach((item, index) =>{
+          object[index] = Object.fromEntries(Object.entries(item).map(([key, value]) => [key.toUpperCase(), value]));
+      });
+      return object;
+  }
+  else {
+      // 맵 형식으로 넘어오는 경우 처리
+      return Object.fromEntries(Object.entries(object).map(([key, value]) => [key.toUpperCase(), value]));
+  }
+}
+
 // http://localhost:4000/ 으로 접속 시 응답메시지 출력
 router.get("/test", (req, res) => {
   // res.send({ test : "this is test!!"});
@@ -39,6 +53,7 @@ router.get("/login", (req, res) => {
         // } else {
         //   req.session.loginUserData = rows[0];
         // }
+        rows = jsonKeyUpperCase(rows);
         res.send(rows);
       } else {
         console.log("error: " + err);
@@ -56,6 +71,7 @@ router.get("/signup/idCheck", (req, res) => {
     `select * from user where id='${idCheck}'`,
     function (err, rows, fields) {
       if (!err) {
+        rows = jsonKeyUpperCase(rows);
         res.send(rows);
       } else {
         console.log("error: " + err);
@@ -73,6 +89,7 @@ router.get("/signup/nameCheck", (req, res) => {
     `select * from user where name='${nameCheck}'`,
     function (err, rows, fields) {
       if (!err) {
+        rows = jsonKeyUpperCase(rows);
         res.send(rows);
       } else {
         console.log("error: " + err);
@@ -90,6 +107,7 @@ router.get("/signup/phNumCheck", (req, res) => {
     `select * from user where phoneNum='${phNumCheck}'`,
     function (err, rows, fields) {
       if (!err) {
+        rows = jsonKeyUpperCase(rows);
         res.send(rows);
       } else {
         console.log("error: " + err);
@@ -122,6 +140,7 @@ router.get("/signup/createuser", (req, res) => {
     );`,
     function (err, rows, fields) {
       if (!err) {
+        rows = jsonKeyUpperCase(rows);
         res.send(rows);
       } else {
         console.log("error: " + err);
@@ -139,6 +158,7 @@ router.get("/logingUserInfo", (req, res) => {
     `select * from user where ID='${reqID}'`,
     function (err, rows, fields) {
       if (!err) {
+        rows = jsonKeyUpperCase(rows);
         res.send(rows);
       } else {
         console.log("error: " + err);
