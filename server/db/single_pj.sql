@@ -30,3 +30,73 @@ INSERT INTO `USER`(
   01082180970,
   'root'
 );
+
+-- 1st 시설
+CREATE TABLE `FACILTY`(
+  `IDX` INT(11) NOT NULL AUTO_INCREMENT,
+  `NAME` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`IDX`)
+);
+
+INSERT INTO `FACILTY`(
+  `NAME`
+) VALUES(
+  '경일대학교'
+);
+
+-- 2nd 시설
+CREATE TABLE `BUILDING`(
+  `IDX` INT(11) NOT NULL AUTO_INCREMENT,
+  `NAME` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`IDX`)
+);
+
+INSERT INTO `BUILDING`(
+  `NAME`
+) VALUES(
+  '중앙도서관'
+);
+INSERT INTO `BUILDING`(
+  `NAME`
+) VALUES(
+  '산학협력관'
+);
+INSERT INTO `BUILDING`(
+  `NAME`
+) VALUES(
+  '창의융합교육센터'
+);
+
+
+-- 3rd 시설
+CREATE TABLE `ROOM`(
+  `IDX` INT(11) NOT NULL AUTO_INCREMENT,
+  `NAME` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`IDX`)
+);
+
+INSERT INTO `ROOM`(
+  `NAME`
+) VALUES(
+  '스터디룸(1)'
+);
+INSERT INTO `ROOM`(
+  `NAME`
+) VALUES(
+  '스터디룸(2)'
+);
+INSERT INTO `ROOM`(
+  `NAME`
+) VALUES(
+  '스터디룸(3)'
+);
+INSERT INTO `ROOM`(
+  `NAME`
+) VALUES(
+  '캡스톤디자인실습실(1)'
+);
+INSERT INTO `ROOM`(
+  `NAME`
+) VALUES(
+  '캡스톤디자인실습실(2)'
+);
