@@ -13,17 +13,20 @@ const FileStore = require("session-file-store")(session);
 //mariaDB connect
 const maria = require("../db/maria");
 
-function jsonKeyUpperCase(object){
-  if(Array.isArray(object)){
-  // 리스트<맵> 형식으로 넘어오는 경우 처리
-      object.forEach((item, index) =>{
-          object[index] = Object.fromEntries(Object.entries(item).map(([key, value]) => [key.toUpperCase(), value]));
-      });
-      return object;
-  }
-  else {
-      // 맵 형식으로 넘어오는 경우 처리
-      return Object.fromEntries(Object.entries(object).map(([key, value]) => [key.toUpperCase(), value]));
+function jsonKeyUpperCase(object) {
+  if (Array.isArray(object)) {
+    // 리스트<맵> 형식으로 넘어오는 경우 처리
+    object.forEach((item, index) => {
+      object[index] = Object.fromEntries(
+        Object.entries(item).map(([key, value]) => [key.toUpperCase(), value])
+      );
+    });
+    return object;
+  } else {
+    // 맵 형식으로 넘어오는 경우 처리
+    return Object.fromEntries(
+      Object.entries(object).map(([key, value]) => [key.toUpperCase(), value])
+    );
   }
 }
 
@@ -156,6 +159,26 @@ router.get("/logingUserInfo", (req, res) => {
 
   maria.query(
     `select * from user where ID='${reqID}'`,
+    function (err, rows, fields) {
+      if (!err) {
+        rows = jsonKeyUpperCase(rows);
+        res.send(rows);
+      } else {
+        console.log("error: " + err);
+        res.send(err);
+      }
+    }
+  );
+});
+
+// 현재 로그인중인 유저정보 수정 api
+router.get("/logingUserUpdate", (req, res) => {
+  const reqID = req.query.reqID;
+  const reqPW = req.query.reqPW;
+  const reqNAME = req.query.reqNAME;
+
+  maria.query(
+    `update user set PASSWORD='${reqPW}',NAME='${reqNAME}' where ID='${reqID}'`,
     function (err, rows, fields) {
       if (!err) {
         rows = jsonKeyUpperCase(rows);
