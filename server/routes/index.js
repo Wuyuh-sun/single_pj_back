@@ -191,6 +191,125 @@ router.get("/logingUserUpdate", (req, res) => {
   );
 });
 
+// default 장소 조회 api
+router.get("/defaultroomlist", (req, res) => {
+  const KIU = "F01";
+  const CU = "F02";
+  const KUMOH = "F03";
+  const ANDONG = "F04";
+
+  maria.query(
+    `select * from room where DEPTH=0 order by DEPTH asc;`,
+    function (err, rows, fields) {
+      if (!err) {
+        rows = jsonKeyUpperCase(rows);
+        res.send(rows);
+      } else {
+        console.log("error: " + err);
+        res.send(err);
+      }
+    }
+  );
+});
+
+//예약 api
+router.get("/roombookexecution", (req, res) => {
+  const BOOK = req.query.BOOK;
+  const PATH = req.query.PATH;
+  const DATE = req.query.DATE;
+  const TIME = req.query.TIME;
+  const TIMEIDX = req.query.TIMEIDX;
+  const ID = req.query.ID;
+  const USERNAME = req.query.USERNAME;
+
+  maria.query(
+    `insert into book(
+      BOOK,
+      PATH,
+      DATE,
+      TIME,
+      TIMEIDX,
+      ID,
+      USERNAME
+    ) values(
+      '${BOOK}',
+      '${PATH}',
+      '${DATE}',
+      '${TIME}',
+      '${TIMEIDX}',
+      '${ID}',
+      '${USERNAME}'
+    );` +
+      `insert into lastbook(
+      BOOK,
+      PATH,
+      DATE,
+      TIME,
+      TIMEIDX,
+      ID,
+      USERNAME
+    ) values(
+      '${BOOK}',
+      '${PATH}',
+      '${DATE}',
+      '${TIME}',
+      '${TIMEIDX}',
+      '${ID}',
+      '${USERNAME}'
+    );`,
+    function (err, rows, fields) {
+      if (!err) {
+        rows = jsonKeyUpperCase(rows);
+        res.send(rows);
+      } else {
+        console.log("error: " + err);
+        res.send(err);
+      }
+    }
+  );
+});
+
+//예약확인 api
+router.get("/roombookread", (req, res) => {
+  const PATH = req.query.PATH;
+  const DATE = req.query.DATE;
+  // const ID = req.query.ID;
+
+  maria.query(
+    `select * from book where PATH='${PATH}' and DATE='${DATE}'`,
+    function (err, rows, fields) {
+      if (!err) {
+        rows = jsonKeyUpperCase(rows);
+        res.send(rows);
+      } else {
+        console.log("error: " + err);
+        res.send(err);
+      }
+    }
+  );
+});
+
+//예약취소 api
+router.get("/roombookcancel", (req, res) => {
+  const PATH = req.query.PATH;
+  const DATE = req.query.DATE;
+  const TIMEIDX = req.query.TIMEIDX;
+  const ID = req.query.ID;
+
+  maria.query(
+    `delete from book where PATH='${PATH}' and DATE='${DATE}' and TIMEIDX='${TIMEIDX}' and ID='${ID}'`,
+    function (err, rows, fields) {
+      if (!err) {
+        rows = jsonKeyUpperCase(rows);
+        res.send(rows);
+      } else {
+        console.log("error: " + err);
+        res.send(err);
+      }
+    }
+  );
+});
+
 // router.get("/sessionTest", (req,res)=>{
 //   console.log(req.session);
 //   if(req.session.num === undefined){
