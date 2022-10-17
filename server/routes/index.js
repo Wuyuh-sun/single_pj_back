@@ -212,6 +212,23 @@ router.get("/defaultroomlist", (req, res) => {
   );
 });
 
+//  B_room 조회 api
+router.get("/broomlist", (req, res) => {
+  const PID = req.query.PID;
+  maria.query(
+    `select * from room where DEPTH=1 and P_ID='${PID}' order by DEPTH asc;`,
+    function (err, rows, fields) {
+      if (!err) {
+        rows = jsonKeyUpperCase(rows);
+        res.send(rows);
+      } else {
+        console.log("error: " + err);
+        res.send(err);
+      }
+    }
+  );
+});
+
 //예약 api
 router.get("/roombookexecution", (req, res) => {
   const BOOK = req.query.BOOK;
