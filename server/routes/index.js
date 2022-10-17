@@ -191,6 +191,25 @@ router.get("/logingUserUpdate", (req, res) => {
   );
 });
 
+// 현재 로그인중인 유저의 예약내역 확인 api
+
+router.get("/logingUserNowBook", (req, res) => {
+  const reqID = req.query.reqID;
+
+  maria.query(
+    `select * from book where ID='${reqID}'`,
+    function (err, rows, fields) {
+      if (!err) {
+        rows = jsonKeyUpperCase(rows);
+        res.send(rows);
+      } else {
+        console.log("error: " + err);
+        res.send(err);
+      }
+    }
+  );
+});
+
 // default 장소 조회 api
 router.get("/defaultroomlist", (req, res) => {
   const KIU = "F01";
@@ -286,6 +305,77 @@ router.get("/roombookexecution", (req, res) => {
   );
 });
 
+//유저당 예약 전체 취소 api
+router.get("/userroombookcancel", (req, res) => {
+  const ID = req.query.ID;
+
+  maria.query(
+    `delete from book where ID='${ID}'`,
+    function (err, rows, fields) {
+      if (!err) {
+        rows = jsonKeyUpperCase(rows);
+        res.send(rows);
+      } else {
+        console.log("error: " + err);
+        res.send(err);
+      }
+    }
+  );
+});
+
+//유저당 현재 예약 조회 api
+router.get("/userroombookread", (req, res) => {
+  const ID = req.query.ID;
+
+  maria.query(
+    `select * from book where ID='${ID}'`,
+    function (err, rows, fields) {
+      if (!err) {
+        rows = jsonKeyUpperCase(rows);
+        res.send(rows);
+      } else {
+        console.log("error: " + err);
+        res.send(err);
+      }
+    }
+  );
+});
+
+//유저당 최근 예약 조회3 api
+router.get("/userlastbookread3", (req, res) => {
+  const ID = req.query.ID;
+
+  maria.query(
+    `select * from lastbook where ID='${ID}' order by IDX desc limit 3`,
+    function (err, rows, fields) {
+      if (!err) {
+        rows = jsonKeyUpperCase(rows);
+        res.send(rows);
+      } else {
+        console.log("error: " + err);
+        res.send(err);
+      }
+    }
+  );
+});
+
+//유저당 최근 예약 조회5 api
+router.get("/userlastbookread5", (req, res) => {
+  const ID = req.query.ID;
+
+  maria.query(
+    `select * from lastbook where ID='${ID}' order by IDX desc limit 5`,
+    function (err, rows, fields) {
+      if (!err) {
+        rows = jsonKeyUpperCase(rows);
+        res.send(rows);
+      } else {
+        console.log("error: " + err);
+        res.send(err);
+      }
+    }
+  );
+});
 //예약확인 api
 router.get("/roombookread", (req, res) => {
   const PATH = req.query.PATH;
